@@ -54,6 +54,8 @@ class UpdateOfflineRepositoryTask extends DefaultTask {
   boolean includeBuildscriptDependencies
   @Input
   boolean continueOnFailure
+  @Input
+  boolean suppressModelWarnings
 
   @TaskAction
   void run() {
@@ -274,13 +276,17 @@ class UpdateOfflineRepositoryTask extends DefaultTask {
 
       def result = modelBuilder.build(modelBuildingRequest)
 
-      if (!result.problems.empty) {
+      if (!result.problems.empty && !this.getSuppressModelWarnings()) {
         result.problems.each { this.logModelProblems(it) }
       }
 
       return result.effectiveModel
     } catch (ModelBuildingException e) {
-      logger.error("${e.getMessage()}: ${e.problems}")
+      if (!this.getSuppressModelWarnings()) {
+        logger.error("${e.getMessage()}: ${e.problems}")
+      } else {
+        logger.trace("${e.getMessage()}: ${e.problems}")
+      }
     }
   }
 

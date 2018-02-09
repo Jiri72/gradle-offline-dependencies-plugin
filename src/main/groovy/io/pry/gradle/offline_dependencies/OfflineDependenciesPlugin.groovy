@@ -39,6 +39,7 @@ class OfflineDependenciesPlugin implements Plugin<Project> {
       conventionMapping.includeIvyXmls = { extension.includeIvyXmls }
       conventionMapping.includeBuildscriptDependencies = { extension.includeBuildscriptDependencies }
       conventionMapping.continueOnFailure = { extension.continueOnFailure }
+      conventionMapping.suppressModelWarnings = { extension.suppressModelWarnings }
     }
   }
 }
